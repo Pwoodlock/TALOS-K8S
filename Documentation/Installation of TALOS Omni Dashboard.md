@@ -50,7 +50,7 @@ sudo usermod -aG docker $USER && EXIT
 # Install Acme.sh with Email notification
 
 ```bash
-https://get.acme.sh | sh -s email=patrick.woodlock@rockfieldit.com
+https://get.acme.sh | sh -s email=YOUR_EMAIL
 ```
 
 Go into the acme.sh folder and look for the cf.sh script and insert your TOKEN, not API key and the Zone id along with your email address registered in for the token and domain name.
@@ -91,7 +91,7 @@ CF_Api="https://api.cloudflare.com/client/v4"
 
 
 ```bash
-acme.sh --issue --dns dns_cf -d rockfieldit.com -d '*.rockfieldit.com'
+acme.sh --issue --dns dns_cf -d YOUR_DOMAIN -d '*.YOUR_DOMAIN'
 ```
 
 
@@ -103,7 +103,7 @@ acme.sh --issue --dns dns_cf -d rockfieldit.com -d '*.rockfieldit.com'
 
 ```bash
 
-acme.sh --issue --dns dns_cf -d talos.1.devsec.ie -d '*.talos.1.devsec.ie'
+acme.sh --issue --dns dns_cf -d talos.1.YOUR_DOMAIN -d '*.talos.1.YOUR_DOMAIN'
 
 ```
 
@@ -113,13 +113,13 @@ acme.sh --issue --dns dns_cf -d talos.1.devsec.ie -d '*.talos.1.devsec.ie'
 
 
 ```c
-[Sat Mar  9 02:45:38 PM UTC 2024] Your cert is in: /home/patrick/.acme.sh/talos.1.devsec.ie_ecc/talos.1.devsec.ie.cer
+[Sat Mar  9 02:45:38 PM UTC 2024] Your cert is in: /home/patrick/.acme.sh/talos.1.YOUR_DOMAIN_ecc/talos.1.YOUR_DOMAIN.cer
 
-[Sat Mar  9 02:45:38 PM UTC 2024] Your cert key is in: /home/patrick/.acme.sh/talos.1.devsec.ie_ecc/talos.1.devsec.ie.key
+[Sat Mar  9 02:45:38 PM UTC 2024] Your cert key is in: /home/patrick/.acme.sh/talos.1.YOUR_DOMAIN_ecc/talos.1.YOUR_DOMAIN.key
 
-[Sat Mar  9 02:45:38 PM UTC 2024] The intermediate CA cert is in: /home/patrick/.acme.sh/talos.1.devsec.ie_ecc/ca.cer
+[Sat Mar  9 02:45:38 PM UTC 2024] The intermediate CA cert is in: /home/patrick/.acme.sh/talos.1.YOUR_DOMAIN_ecc/ca.cer
 
-[Sat Mar  9 02:45:38 PM UTC 2024] And the full chain certs is there: /home/patrick/.acme.sh/talos.1.devsec.ie_ecc/fullchain.cer
+[Sat Mar  9 02:45:38 PM UTC 2024] And the full chain certs is there: /home/patrick/.acme.sh/talos.1.YOUR_DOMAIN_ecc/fullchain.cer
 ```
 
 Once the above has completed correctly, you then need to get the certs the and convert  and copy them into the omni directory with this command.
@@ -127,7 +127,7 @@ Once the above has completed correctly, you then need to get the certs the and c
 
 ```bash
 
-acme.sh --install-cert -d rockfieldit.com --cert-file ./omni/tls.crt --key-file ./omni/tls.key --fullchain-file ./omni/chain.crt
+acme.sh --install-cert -d YOUR_DOMAIN --cert-file ./omni/tls.crt --key-file ./omni/tls.key --fullchain-file ./omni/chain.crt
 
 ```
 
@@ -137,7 +137,7 @@ OR for the normal wildcard mode:
 
 ```bash
 
-acme.sh --install-cert -d devsec.ie --cert-file ./omni/tls.crt --key-file ./omni/tls.key --fullchain-file ./omni/chain.crt
+acme.sh --install-cert -d YOUR_DOMAIN --cert-file ./omni/tls.crt --key-file ./omni/tls.key --fullchain-file ./omni/chain.crt
 
 ```
 
@@ -161,7 +161,7 @@ Create a script `update-omni-certs.sh` to automatically update the certificates 
 
 
 ```bash
-gpg --quick-generate-key "patrick.woodlock@rockfieldit.com" rsa4096 cert never && gpg --list-secret-keys
+gpg --quick-generate-key "YOUR EMAIL" rsa4096 cert never && gpg --list-secret-keys
 
 ```
 
@@ -176,7 +176,7 @@ Then we need to copy the key into the omni folder for use:
 
 
 ```bash
-gpg --export-secret-key --armor patrick.woodlock@rockfieldit.com > omni.asc
+gpg --export-secret-key --armor YOUR EMAIL > omni.asc
 cp omni.asc omni/omni.asc
 ```
 
