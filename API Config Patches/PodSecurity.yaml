@@ -1,0 +1,15 @@
+cluster:
+  apiServer:
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+          kind: PodSecurityConfiguration
+          defaults:
+            enforce: privileged #You have the option of baseline, restricted, privileged
+
+# This is for changing the the enforce from baseline to privileged so I can use my mounts with longhorn
+# I this is just a quick fix for now, I will need to look into this more later to only assign it to the longhorn namespace
+
+# $Env:KUBECONFIG = "C:\Users\Patrick\.kube\wazuh-local-stag-kubeconfig.yaml"                    
+# kubectl label namespace longhorn-system pod-security.kubernetes.io/enforce=privileged 

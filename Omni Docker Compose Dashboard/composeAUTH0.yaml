@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  omni:
+    image: ghcr.io/siderolabs/omni:0.31 # Use latest when first installing, and then versioning after that for consistency 
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN 
+    volumes:
+      - ./etcd:/_out/etcd
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./chain.crt:/tls.crt
+      - ./tls.key:/tls.key
+      - ./omni.asc:/omni.asc
+    command:
+      - --account-id=411539f5-e508-4fc8-b8e2-f7c411a64f26 # Each instance deployed will need this ID, so make sure you generate it and insert it here. 
+      - --name=TALOS-RF # You can name this to whatever you want
+      - --cert=/tls.crt
+      - --key=/tls.key
+      - --siderolink-api-cert=/tls.crt
+      - --siderolink-api-key=/tls.key
+      - --private-key-source=file:///omni.asc
+      - --event-sink-port=8091
+      - --bind-addr=0.0.0.0:443
+      - --siderolink-api-bind-addr=0.0.0.0:8090
+      - --k8s-proxy-bind-addr=0.0.0.0:8100
+      - --advertised-api-url=https://YourDomainHere # Change to your domain
+      - --siderolink-api-advertised-url=https://YOUR_DOMAIN_HERE:8090 # Change to your domain
+      - --siderolink-wireguard-advertised-addr=IP_GOES_HERE:50180 # Always use the public IP of the server and UDP port 50180 firewall rule
+      - --advertised-kubernetes-proxy-url=YourAddressHere:8100
+      - --auth-auth0-enabled=true
+      - --auth-auth0-domain= Insert your Auth0 domain here
+      - --auth-auth0-client-id=INSERT YOUR CLIENT ID HERE
+      - --initial-users=INSERT YOUR EMAIL ADDRESS HERE THAT's LINKED TO THE AUTHO

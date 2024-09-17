@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  omni:
+    image: ghcr.io/siderolabs/omni:latest
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN 
+    volumes:
+      - ./etcd:/_out/etcd
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./chain.crt:/tls.crt
+      - ./tls.key:/tls.key
+      - ./omni.asc:/omni.asc
+    command:
+      - --account-id=411539f5-e508-4fc8-b8e2-f7c411a64f26
+      - --name=TALOS-RF # You can name this to whatever you want
+      - --cert=/tls.crt
+      - --key=/tls.key
+      - --siderolink-api-cert=/tls.crt
+      - --siderolink-api-key=/tls.key
+      - --private-key-source=file:///omni.asc
+      - --event-sink-port=8091
+      - --bind-addr=0.0.0.0:443
+      - --siderolink-api-bind-addr=0.0.0.0:8090
+      - --k8s-proxy-bind-addr=0.0.0.0:8100
+      - --advertised-api-url=https://talos.rockfieldit.com # Change to your domain
+      - --siderolink-api-advertised-url=https://talos.rockfieldit.com:8090 # Change to your domain
+      - --siderolink-wireguard-advertised-addr=65.109.167.228:50180 # Always use the public IP of the server and UDP port 50180 firewall rule
+      - --advertised-kubernetes-proxy-url=https://talos.rockfieldit.com:8100
+      # SAML WITH MS365 ENTRA ID Application
+      - --auth-saml-enabled=true
+      - --initial-users=YOUR EMAIL ADDRESS HERE. FIRST SIGN IN BECOMES ADMINISTRATOR FOR CLUSTER
+      - --auth-saml-url=INSERT YOUR FEDERATION URL HERE
+      
